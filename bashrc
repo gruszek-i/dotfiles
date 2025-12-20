@@ -1,12 +1,12 @@
-bind 'set show-all-if-ambiguous on' # immediately list matchces instead of ringing the bell 
-bind 'TAB:menu-complete' # display list of completions in next line
+bind 'set show-all-if-ambiguous on' # immediately list matchces instead of ringing the bell
+bind 'TAB:menu-complete'            # display list of completions in next line
 
 # Use bash-completion, if available
-[[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
-    . /usr/share/bash-completion/bash_completion
+[[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] &&
+  . /usr/share/bash-completion/bash_completion
 
 set mark-symlinked-directories on # If a tab-completed file is a symlink to a directory, treat it like a directory not a file
-set colored-status on # colored ls etc. 
+set colored-status on             # colored ls etc.
 
 alias nv='nvim'
 alias ls='ls --color=auto'
@@ -33,3 +33,7 @@ export XDG_PICTURES_DIR='~/Pictures'
 . "$HOME/.atuin/bin/env"
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
 eval "$(atuin init bash --disable-up-arrow)"
+
+eval "$(uv generate-shell-completion bash)"
+
+export PATH="$HOME/.local/bin:$PATH"
