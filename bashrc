@@ -1,3 +1,6 @@
+# If not running interactively, don't do anything
+[[ -n $PS1 ]] || return
+
 bind 'set show-all-if-ambiguous on' # immediately list matchces instead of ringing the bell
 bind 'TAB:menu-complete'            # display list of completions in next line
 
