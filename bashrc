@@ -4,7 +4,7 @@
 bind 'set show-all-if-ambiguous on' # immediately list matchces instead of ringing the bell
 bind 'TAB:menu-complete'            # display list of completions in next line
 bind 'set mark-symlinked-directories on' # If a tab-completed file is a symlink to a directory, treat it like a directory not a file
-bind'set colored-stats on'             # colored ls etc.
+bind 'set colored-stats on'             # colored ls etc.
 
 
 # Use bash-completion, if available
