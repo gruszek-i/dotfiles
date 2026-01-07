@@ -39,4 +39,6 @@ eval "$(atuin init bash --disable-up-arrow)"
 
 eval "$(uv generate-shell-completion bash)"
 
+# PATH
 export PATH="$HOME/.local/bin:$PATH"
+export PATH=/home/gruszek/.opencode/bin:$PATH
