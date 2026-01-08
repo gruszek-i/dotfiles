@@ -38,14 +38,13 @@ fi
 # flux
 has flux && . <(flux completion bash)
 
-# atuin
-[[ -f "$HOME/.atuin/bin/env" ]] && . "$HOME/.atuin/bin/env"
-
 has uv && eval "$(uv generate-shell-completion bash)"
 
 # modified prompt from https://github.com/riobard/bash-powerline?tab=readme-ov-file
 source ~/.bash-powerline.sh
 
+# atuin
+[[ -f "$HOME/.atuin/bin/env" ]] && . "$HOME/.atuin/bin/env"
 if has atuin; then
   [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
   eval "$(atuin init bash --disable-up-arrow)"
