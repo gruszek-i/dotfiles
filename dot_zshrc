@@ -1,0 +1,72 @@
+# If not running interactively, don't do anything
+[[ -o interactive ]] || return
+
+# Use zsh-completion
+autoload -Uz compinit && compinit
+
+# Completion settings
+zstyle ':completion:*' menu select
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' format '%B%d%b'
+setopt AUTO_CD              # cd by typing directory name
+setopt CORRECT              # autocorrect typos
+setopt NO_BEEP
+setopt INTERACTIVE_COMMENTS
+setopt NO_CLOBBER
+setopt NO_MULTIOS
+setopt NO_FLOW_CONTROL
+
+# History
+setopt APPEND_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt INC_APPEND_HISTORY
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+
+# PATH
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="/home/gruszek/.opencode/bin:$PATH"
+export EDITOR='nvim'
+export XDG_PICTURES_DIR="$HOME/Pictures"
+
+# ALIASES
+alias nv='nvim'
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+alias ..='cd ..'
+alias ll='ls -la'
+alias clip='wl-copy'
+alias trd="tr -d '[:space:]'"
+
+has() {
+  (( $+commands[$1] ))
+}
+
+c() {
+  cat "$1" | wl-copy 
+}
+
+# kubectl
+if has kubectl; then
+  alias k='kubectl'
+  source <(kubectl completion zsh)
+fi
+
+# flux
+has flux && source <(flux completion zsh)
+
+# uv
+has uv && eval "$(uv generate-shell-completion zsh)"
+
+# prompt - możesz użyć starship, powerlevel10k, albo prosty:
+# source ~/.zsh-powerline.sh  # jeśli masz wersję dla zsh
+# lub prosty prompt:
+source ~/.zsh-powerline.sh
+
+# atuin
+[[ -f "$HOME/.atuin/bin/env" ]] && . "$HOME/.atuin/bin/env"
+has atuin && eval "$(atuin init zsh --disable-up-arrow)"
