@@ -1,6 +1,8 @@
 # If not running interactively, don't do anything
 [[ -o interactive ]] || return
 
+fastfetch
+
 # Use zsh-completion
 autoload -Uz compinit && compinit
 
@@ -48,6 +50,10 @@ has() {
 
 c() {
   cat "$1" | wl-copy 
+}
+
+kport() {
+  kill -9 $(lsof -t -i:"$1")
 }
 
 # kubectl
