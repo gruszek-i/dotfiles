@@ -20,6 +20,11 @@ setopt NO_CLOBBER
 setopt NO_MULTIOS
 setopt NO_FLOW_CONTROL
 
+# Repair what was broken
+bindkey -e
+bindkey '^[[1;5C' emacs-forward-word
+bindkey '^[[1;5D' emacs-backward-word
+
 # History
 setopt APPEND_HISTORY
 setopt HIST_IGNORE_DUPS
@@ -43,6 +48,8 @@ alias ..='cd ..'
 alias ll='ls -la'
 alias clip='wl-copy'
 alias trd="tr -d '[:space:]'"
+alias cza="chezmoi apply"
+alias cze="czezmoi edit"
 
 has() {
   (( $+commands[$1] ))
@@ -68,9 +75,7 @@ has flux && source <(flux completion zsh)
 # uv
 has uv && eval "$(uv generate-shell-completion zsh)"
 
-# prompt - możesz użyć starship, powerlevel10k, albo prosty:
-# source ~/.zsh-powerline.sh  # jeśli masz wersję dla zsh
-# lub prosty prompt:
+# prompt
 source ~/.zsh-powerline.sh
 
 # atuin
