@@ -28,6 +28,6 @@ COLOR_RESET='%f%k'
 PS_SYMBOL='$'
 
 # venv
-venv() { [[ -n $VIRTUAL_ENV ]] && print -n "${COLOR_VENV}($(basename $VIRTUAL_ENV)) ${COLOR_RESET}"; }
+# venv() { [[ -n $VIRTUAL_ENV ]] && print -n "${COLOR_VENV}($(basename $VIRTUAL_ENV)) ${COLOR_RESET}"; }
 
-PROMPT='$(venv)%F{cyan}%n@%m%f %F{blue}%~%f%F{cyan}${vcs_info_msg_0_}%f%(?.${COLOR_SUCCESS} ${PS_SYMBOL} ${COLOR_RESET}.${COLOR_FAILURE} ${PS_SYMBOL} ${COLOR_RESET})'
+PROMPT='%F{cyan}%n@%m%f %F{blue}%~%f%F{cyan}${vcs_info_msg_0_}%f%(?.${COLOR_SUCCESS} ${PS_SYMBOL} ${COLOR_RESET}.${COLOR_FAILURE} ${PS_SYMBOL} ${COLOR_RESET})'

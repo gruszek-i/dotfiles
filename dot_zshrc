@@ -49,7 +49,7 @@ alias ll='ls -la'
 alias clip='wl-copy'
 alias trd="tr -d '[:space:]'"
 alias cza="chezmoi apply"
-alias cze="czezmoi edit"
+alias cze="chezmoi edit"
 
 has() {
   (( $+commands[$1] ))
