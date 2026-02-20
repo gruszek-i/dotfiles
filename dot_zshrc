@@ -50,6 +50,7 @@ alias clip='wl-copy'
 alias trd="tr -d '[:space:]'"
 alias cza="chezmoi apply"
 alias cze="chezmoi edit"
+alias czd="chezmoi cd"
 
 has() {
   (( $+commands[$1] ))
@@ -61,6 +62,10 @@ c() {
 
 kport() {
   kill -9 $(lsof -t -i:"$1")
+}
+
+mann () {
+  man $1 | bat -l man --style=-numbers
 }
 
 # kubectl
