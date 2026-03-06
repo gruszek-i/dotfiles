@@ -51,6 +51,7 @@ alias trd="tr -d '[:space:]'"
 alias cza="chezmoi apply"
 alias cze="chezmoi edit"
 alias czd="chezmoi cd"
+alias chafat="chafa --passthrough tmux"
 
 has() {
   (( $+commands[$1] ))
