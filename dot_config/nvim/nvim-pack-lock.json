@@ -1,0 +1,20 @@
+{
+  "plugins": {
+    "mini.pick": {
+      "rev": "c8f4ff0251ccb8c6a993ee0dee4e06d9c21a4b99",
+      "src": "https://github.com/echasnovski/mini.pick"
+    },
+    "nvim": {
+      "rev": "84336e08415858f6d835835e81a4f79e585463c6",
+      "src": "https://github.com/catppuccin/nvim"
+    },
+    "nvim-lspconfig": {
+      "rev": "4d3b3bb8815fbe37bcaf3dbdb12a22382bc11ebe",
+      "src": "https://github.com/neovim/nvim-lspconfig"
+    },
+    "vim-surround": {
+      "rev": "3d188ed2113431cf8dac77be61b842acb64433d9",
+      "src": "https://github.com/tpope/vim-surround"
+    }
+  }
+}
