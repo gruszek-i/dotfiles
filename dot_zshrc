@@ -1,10 +1,32 @@
 # If not running interactively, don't do anything
 [[ -o interactive ]] || return
 
-fastfetch
+# If not in tmux, start tmux.
+if [[ -z ${TMUX+X}${ZSH_SCRIPT+X}${ZSH_EXECUTION_STRING+X} ]]; then
+  exec tmux
+fi
 
-# Use zsh-completion
-autoload -Uz compinit && compinit
+function zcompile-many() {
+  local f
+  for f; do zcompile -R -- "$f".zwc "$f"; done
+}
+
+# Clone and compile missing plugins.
+if [[ ! -e ~/.zsh/zsh-autosuggestions ]]; then
+  git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions.git ~/.zsh/zsh-autosuggestions
+  zcompile-many ~/zsh-autosuggestions/{zsh-autosuggestions.zsh,src/**/*.zsh}
+fi
+
+if [[ ! -e ~/.zsh/zsh-syntax-highlighting ]]; then
+  git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
+  zcompile-many ~/zsh-syntax-highlighting/{zsh-syntax-highlighting.zsh,highlighters/*/*.zsh}
+fi
+
+has() {
+  (( $+commands[$1] ))
+}
+
+has fastfetch && fastfetch
 
 # Completion settings
 zstyle ':completion:*' menu select
@@ -12,16 +34,23 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' format '%B%d%b'
+
+# Enable completion system
+autoload -Uz compinit && compinit
+[[ ~/.zcompdump.zwc -nt ~/.zcompdump ]] || zcompile-many ~/.zcompdump
+unfunction zcompile-many
+
+# Options
 setopt AUTO_CD              # cd by typing directory name
 setopt CORRECT              # autocorrect typos
 setopt NO_BEEP
-setopt INTERACTIVE_COMMENTS
-setopt NO_CLOBBER
-setopt NO_MULTIOS
-setopt NO_FLOW_CONTROL
+setopt INTERACTIVE_COMMENTS # comments in interactive shell
+setopt NO_CLOBBER           # no overwriting existing files with >, use >|
+setopt NO_FLOW_CONTROL      # no freezing with ctrl+s
 
-# Repair what was broken
+# Emacs shell
 bindkey -e
+# ctrl+left ctrl+right didn't work in tmux without it
 bindkey '^[[1;5C' emacs-forward-word
 bindkey '^[[1;5D' emacs-backward-word
 
@@ -30,44 +59,40 @@ setopt APPEND_HISTORY
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
 setopt INC_APPEND_HISTORY
-HISTFILE=~/.zsh_history
+HISTFILE=~/.zsh/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 
 # PATH
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="/home/gruszek/.opencode/bin:$PATH"
+export PATH="$HOME/$USER/.opencode/bin:$PATH"
 export EDITOR='nvim'
 export XDG_PICTURES_DIR="$HOME/Pictures"
 
-# ALIASES
+# Aliases
 alias nv='nvim'
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
-alias ..='cd ..'
 alias ll='ls -la'
 alias clip='wl-copy'
 alias trd="tr -d '[:space:]'"
-alias cza="chezmoi apply"
+alias cza="chezmoi add"
 alias cze="chezmoi edit"
 alias czd="chezmoi cd"
 alias chafat="chafa --passthrough tmux"
 
-has() {
-  (( $+commands[$1] ))
-}
-
 c() {
-  cat "$1" | wl-copy 
+  cat "$1" | wl-copy
 }
 
 kport() {
   kill -9 $(lsof -t -i:"$1")
 }
 
-mann () {
-  man $1 | bat -l man --style=-numbers
+mann() {
+  man "$1" | bat -l man --style=-numbers
 }
+alias man="mann"
 
 # kubectl
 if has kubectl; then
@@ -81,15 +106,24 @@ has flux && source <(flux completion zsh)
 # uv
 has uv && eval "$(uv generate-shell-completion zsh)"
 
-# prompt
-source ~/.zsh-powerline.sh
+# Prompt
+source ~/.zsh/.zsh-powerline.sh
 
 # atuin
 [[ -f "$HOME/.atuin/bin/env" ]] && . "$HOME/.atuin/bin/env"
 has atuin && eval "$(atuin init zsh --disable-up-arrow)"
+source "$HOME/_atuin"
 
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+# ghcup
+[ -f "/home/gruszek/.ghcup/env" ] && . "/home/gruszek/.ghcup/env"
+
+# SDKMAN
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-[ -f "/home/gruszek/.ghcup/env" ] && . "/home/gruszek/.ghcup/env" # ghcup-env
+# Plugins
+ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# zsh-syntax-highlighting should be loaded last
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
